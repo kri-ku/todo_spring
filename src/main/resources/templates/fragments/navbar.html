@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link type ="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"></link>
+		<title>navigation</title>
+	</head>
+	<body>
+
+		<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
+  			<a class="navbar-brand" href="#">Todo app</a>
+  				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    				<span class="navbar-toggler-icon"></span>
+  				</button>
+  				
+			  <div class="collapse navbar-collapse" id="navbarText">
+			    <ul class="navbar-nav mr-auto">
+			    
+			       <li th:classappend="${#httpServletRequest.getRequestURI() == '/todaylist' ? 'active':''}" class="nav-item">
+			        <a class="nav-link" href="/todaylist">Today</a>
+			      </li>
+			      
+			      <li th:classappend="${#httpServletRequest.getRequestURI() == '/tomorrowlist' ? 'active':''}" class="nav-item">
+			        <a class="nav-link" href="/tomorrowlist">Tomorrow</a>
+			      </li>
+			      
+			      <li th:classappend="${#httpServletRequest.getRequestURI() == '/notelist' ? 'active':''}" class="nav-item">
+			        <a class="nav-link" href="/notelist">All todos</a>
+			      </li>
+			      
+			      <li>
+			      <a href="/add" class="btn btn-success">Add note</a>
+			      </li>
+			    </ul>
+			  
+			    <span class="navbar-text">
+			   		 Hello [[${#httpServletRequest.remoteUser}]]!
+						<form th:action="@{/logout}" method="post">
+						<input type="submit" class="btn btn-danger" value="Sign Out"/>
+					</form>
+			    </span>
+			  </div>
+			</nav>
+
+	</body>
+</html>

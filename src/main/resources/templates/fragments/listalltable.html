@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link type ="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"></link>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		<title>table of notes</title>
+	</head>
+	<body>
+
+ 		<table th:fragment="table" class=" table table-striped">
+			<tr>
+				<th></th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Content</th>
+				<th>Done</th>
+				<th></th>
+				<th></th>
+			</tr>
+			
+			<tr th:each="note : ${notes}">
+				<td>
+					<p th:if="${note.getImportant()==true}" style="font-size:2em; color: Tomato" class="fas fa-exclamation"></p>
+				</td>
+				<td th:text="${note.getDate()}"/>
+				<td th:text="${note.getTime()}"/>
+				<td th:text="${note.getContent()}"/>
+				<td>
+					<p th:if="${note.getDone()==true}" class="fas fa-check"></p>
+					<p th:unless="${note.getDone()==false}"></p>
+				</td>
+				<td><a th:href ="@{/edit/{id}(id=${note.id})}" class="btn btn-success">Edit</a></td>
+				<td>
+					<form th:object="${note}" th:action="@{/delete/{id}(id=${note.id})}" method="post">
+				    	<button type="submit" onClick="return confirm('sure you want to delete this note?')">Delete</button>                    
+				    </form>
+				</td>
+			</tr>
+		</table>                   
+	</body>
+</html>

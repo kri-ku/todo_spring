@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link type ="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"></link>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		<title>List of todos</title>
+	</head>
+	<body>
+		<div th:insert="fragments/navbar :: navbar"></div>
+		<p margin= 200px>
+			<h1>All notes starting today</h1>
+			<a href="/previousnotes" class="btn btn-success">Previous</a>
+		</p>
+ 		<div th:insert="fragments/listalltable :: table"></div>
+
+	</body>
+</html>

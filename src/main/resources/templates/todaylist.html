@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link type ="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"></link>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<title>today</title>
+</head>
+
+	<body>
+		<div th:insert="fragments/navbar :: navbar"></div>
+	
+		<h1 th:text="'Today is ' + ${date}"></h1>
+		<h2>Do</h2>
+		<table class=" table table-striped">
+		
+			<tr>
+				<th></th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Content</th>
+				<th></th>
+				<th></th>
+			</tr>
+	
+			<tr th:each="note : ${notesnotdone}">
+				<td>
+					<p th:if="${note.getImportant()==true}" style="font-size:2em; color: Tomato" class="fas fa-exclamation"></p>
+				</td>
+				<td th:text="${note.getDate()}"/>
+				<td th:text="${note.getTime()}"/>
+				<td th:text="${note.getContent()}"/>
+				<td><a th:href ="@{/donetoday/{id}(id=${note.id})}" class="btn btn-success">Mark as done</a></td>
+				<td><a th:href ="@{/edit/{id}(id=${note.id})}" class="btn btn-success">Edit</a></td>
+			
+			</tr>		
+		</table>
+		
+		<h2>Done</h2>
+		
+		<table class=" table table-striped">
+			<tr>
+				<th></th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Content</th>
+				<th></th>
+				<th></th>
+			</tr>
+			<tr th:each="note : ${notesdone}">
+				<td>
+				<p th:if="${note.getImportant()==true}" style="font-size:2em; color: Tomato" class="fas fa-exclamation"></p>	
+				</td>
+				<td th:text="${note.getDate()}"/>
+				<td th:text="${note.getTime()}"/>
+				<td th:text="${note.getContent()}"/>
+				<td><a th:href ="@{/donetoday/{id}(id=${note.id})}" class="btn btn-danger">Put back on todo-list</a></td>
+				<td><a th:href ="@{/edit/{id}(id=${note.id})}" class="btn btn-success">Edit</a></td>
+			<tr>
+			</table>
+	</body>
+</html>
