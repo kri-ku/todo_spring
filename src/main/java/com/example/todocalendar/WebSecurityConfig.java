@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.csrf().disable() // this disabling makes using Postman possible to test REST
+		//.csrf().disable() // this disabling makes using Postman possible to test REST
 		.authorizeRequests().anyRequest().authenticated()	//all requests need authentication
 		.and()
 		.formLogin()
