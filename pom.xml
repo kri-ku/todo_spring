@@ -102,12 +102,11 @@
 		</dependency>
 		
 		<!-- In memory db, used locally -->
-		<!-- 
+		 
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-		 -->
 		 
 		<!-- PostgreSQL used in Heroku -->
 		 <dependency>
