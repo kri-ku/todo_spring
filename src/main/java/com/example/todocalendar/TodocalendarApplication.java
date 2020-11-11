@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.example.todocalendar.domain.Note;
 import com.example.todocalendar.domain.NoteRepository;
-import com.example.todocalendar.domain.User;
+import com.example.todocalendar.domain.UserEntity;
 import com.example.todocalendar.domain.UserRepository;
 
 @SpringBootApplication
@@ -46,9 +46,9 @@ public class TodocalendarApplication {
 
 			// (String username, String passwordHash, String email, String role
 			log.info("making users");
-			User user1 = new User("user", "$2a$04$eKMN1Hf4GbAlz86ZPoIH9eQGxpJTBfQIuml5HgqEsfTHWwqguTALu",
+			UserEntity user1 = new UserEntity("user", "$2a$04$eKMN1Hf4GbAlz86ZPoIH9eQGxpJTBfQIuml5HgqEsfTHWwqguTALu",
 					"timo@timo.fi", "USER");
-			User user2 = new User("admin", "$2a$04$tI3cgRKNX.IDZf4Hft85Lua4cbdvH2uxHji8z6vvKMeH1ZPwQqyUa",
+			UserEntity user2 = new UserEntity("admin", "$2a$04$tI3cgRKNX.IDZf4Hft85Lua4cbdvH2uxHji8z6vvKMeH1ZPwQqyUa",
 					"kipa@kipa.fi", "ADMIN");
 			urepository.save(user1);
 			urepository.save(user2);

@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.todocalendar.domain.User;
+import com.example.todocalendar.domain.UserEntity;
 import com.example.todocalendar.domain.UserRepository;
 
 // Spring security uses this to authenticate and authorize user
@@ -23,7 +23,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User currentUser = repository.findByUsername(username);
+		UserEntity currentUser = repository.findByUsername(username);
 		UserDetails user = new org.springframework.security.core.userdetails.User(username, currentUser.getPasswordHash(),
 				AuthorityUtils.createAuthorityList(currentUser.getRole()));
 

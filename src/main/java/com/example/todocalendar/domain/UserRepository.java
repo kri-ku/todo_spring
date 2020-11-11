@@ -2,9 +2,9 @@ package com.example.todocalendar.domain;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<UserEntity, Long> {
 	
-	User findByUsername(String username);
+	UserEntity findByUsername(String username);
 	
 
 }
