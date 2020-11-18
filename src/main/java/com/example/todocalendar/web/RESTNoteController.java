@@ -3,6 +3,8 @@ package com.example.todocalendar.web;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import com.example.todocalendar.domain.NoteRepository;
 
 @CrossOrigin
 @RestController
+@Transactional
 public class RESTNoteController {
 	
 	@Autowired

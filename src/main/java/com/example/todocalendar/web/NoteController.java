@@ -1,10 +1,14 @@
 package com.example.todocalendar.web;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +18,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.todocalendar.domain.Note;
 import com.example.todocalendar.domain.NoteRepository;
+import com.example.todocalendar.domain.UserEntity;
+import com.example.todocalendar.domain.UserRepository;
 
 @Controller
 public class NoteController {
 
 	@Autowired
 	private NoteRepository repository;
+	@Autowired
+	private UserRepository urepository;
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MMM yyyy", new Locale("en"));
+	
+	//get current user as UserEntity
+	private UserEntity getCurrUser() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ((UserDetails)principal).getUsername();
+		UserEntity curruser = urepository.findByUsername(username); 
+		return curruser;
+	}
+	
 
 	@RequestMapping("/login")
 	public String login() {
@@ -29,8 +47,7 @@ public class NoteController {
 	// show all notes starting from today
 	@GetMapping({ "/", "/notelist" })
 	public String notelist(Model model) {
-		//model.addAttribute("notes", repository.findAllByOrderByDate(Sort.by("time")));
-		model.addAttribute("notes", repository.findByDateAfterOrderByDate(LocalDate.now().minusDays(1), Sort.by("time")));
+		model.addAttribute("notes", repository.findByUserAndDateAfterOrderByDate(getCurrUser(),LocalDate.now().minusDays(1), Sort.by("time")));
 		return "notelist";
 	}
 
@@ -44,9 +61,9 @@ public class NoteController {
 	// show notes today, done and not-done
 	@GetMapping("/todaylist")
 	public String listtoday(Model model) {
-		model.addAttribute("notesnotdone", repository.findAllByDateAndDoneOrderByTime(LocalDate.now(), false));
-		model.addAttribute("notesdone", repository.findAllByDateAndDoneOrderByTime(LocalDate.now(), true));
-		model.addAttribute("date", LocalDate.now());
+		model.addAttribute("notesnotdone", repository.findAllByUserAndDateAndDoneOrderByTime(getCurrUser(),LocalDate.now(), false));
+		model.addAttribute("notesdone", repository.findAllByUserAndDateAndDoneOrderByTime(getCurrUser(),LocalDate.now(), true));
+		model.addAttribute("date", LocalDate.now().format(formatter));
 		return "todaylist";
 
 	}
@@ -54,9 +71,9 @@ public class NoteController {
 	// show notes tomorrow, done and not-done
 	@GetMapping("/tomorrowlist")
 	public String listtomorrow(Model model) {
-		model.addAttribute("notesnotdone", repository.findAllByDateAndDoneOrderByTime(LocalDate.now().plusDays(1), false));
-		model.addAttribute("notesdone", repository.findAllByDateAndDoneOrderByTime(LocalDate.now().plusDays(1), true));
-		model.addAttribute("date", LocalDate.now().plusDays(1));
+		model.addAttribute("notesnotdone", repository.findAllByUserAndDateAndDoneOrderByTime(getCurrUser(),LocalDate.now().plusDays(1), false));
+		model.addAttribute("notesdone", repository.findAllByUserAndDateAndDoneOrderByTime(getCurrUser(),LocalDate.now().plusDays(1), true));
+		model.addAttribute("date", LocalDate.now().plusDays(1).format(formatter));
 		return "tomorrowlist";
 
 	}
@@ -64,6 +81,7 @@ public class NoteController {
 	// save new note to database
 	@PostMapping("/save")
 	public String save(Note note) {
+		note.setUser(getCurrUser());
 		repository.save(note);
 		return "redirect:/notelist";
 	}
@@ -87,8 +105,9 @@ public class NoteController {
 			note.setDone(true);
 		}
 		repository.save(note);
-		model.addAttribute("notesnotdone", repository.findAllByDateAndDoneOrderByTime(LocalDate.now(), false));
-		model.addAttribute("notesdone", repository.findAllByDateAndDoneOrderByTime(LocalDate.now(), true));
+		
+		model.addAttribute("notesnotdone", repository.findAllByUserAndDateAndDoneOrderByTime(getCurrUser(),LocalDate.now(), false));
+		model.addAttribute("notesdone", repository.findAllByUserAndDateAndDoneOrderByTime(getCurrUser(),LocalDate.now(), true));
 		return "redirect:/todaylist";
 	}
 	
@@ -104,15 +123,15 @@ public class NoteController {
 			note.setDone(true);
 		}
 		repository.save(note);
-		model.addAttribute("notesnotdone", repository.findAllByDateAndDoneOrderByTime(LocalDate.now(), false));
-		model.addAttribute("notesdone", repository.findAllByDateAndDoneOrderByTime(LocalDate.now(), true));
+		model.addAttribute("notesnotdone", repository.findAllByUserAndDateAndDoneOrderByTime(getCurrUser(),LocalDate.now().plusDays(1), false));
+		model.addAttribute("notesdone", repository.findAllByUserAndDateAndDoneOrderByTime(getCurrUser(),LocalDate.now().plusDays(1), true));
 		return "redirect:/tomorrowlist";
 	}
 
 	// show notes before today
 	@RequestMapping(value = "/previousnotes")
 	public String showOldNotes(Model model) {
-		model.addAttribute("notes", repository.findByDateBeforeOrderByDate(LocalDate.now(),Sort.by("time")));
+		model.addAttribute("notes", repository.findByUserAndDateBeforeOrderByDate(getCurrUser(), LocalDate.now(),Sort.by("time")));
 		return "previousnotes";
 	}
 

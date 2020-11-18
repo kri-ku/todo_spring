@@ -7,21 +7,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
-//import org.springframework.data.annotation.Id;
 
 @Entity
 public class Note {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long note_id;
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 	private LocalTime time;
 	private String content;
 	private Boolean important;
 	private Boolean done = false;
+
+	@ManyToOne
+	// @JsonIgnoreProperties ("note")
+	@JoinColumn(name = "user_id")
+	private UserEntity user;
 
 	public Note() {
 	}
@@ -35,12 +42,21 @@ public class Note {
 		this.done = false;
 	}
 
+	public Note(LocalDate date, LocalTime time, String content, Boolean important, UserEntity user) {
+		super();
+		this.date = date;
+		this.time = time;
+		this.content = content;
+		this.important = important;
+		this.user = user;
+	}
+
 	public long getId() {
-		return id;
+		return note_id;
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		this.note_id = id;
 	}
 
 	public LocalDate getDate() {
@@ -83,10 +99,12 @@ public class Note {
 		this.done = done;
 	}
 
-	@Override
-	public String toString() {
-		return "Note [id=" + id + ", date=" + date + ", time=" + time + ", content=" + content + ", important="
-				+ important + ", done=" + done + "]";
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 
 }

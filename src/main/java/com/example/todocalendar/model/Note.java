@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Note {
-	private long id;
+	private Long id;
 	private LocalDate date;
 	private LocalTime time;
 	private String content;

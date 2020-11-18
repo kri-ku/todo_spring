@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-	<html xmlns:th="http://www.thymeleaf.org">
+	<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   		<link type ="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}"></link>
@@ -28,6 +30,9 @@
 			<label for="important">Important</label><br>
 			<input class="form-control-lg" type= "checkbox" th:field="*{important}">yes</input><br><br>
 		</div>
+		<!-- 
+		<input th:text="${#authentication.name}"th:field="*{username}" th:value="${#authentication.name}" class="form-control" />
+		 -->
 		<input type="submit" value="save" class="btn btn-success"></input>
 	</form>
 	

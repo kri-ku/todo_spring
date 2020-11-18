@@ -15,37 +15,20 @@ public interface NoteRepository extends CrudRepository<Note, Long> {
 	// find all notes
 	public List<Note> findAll();
 
+	// all of notes are find by user so that user only sees notes that he/she has
+	// made -->
+
 	// Find notes after date and sort them by date, used in all notes - page
-	// In controller sort them also by time and set the "day after" yesturday
-	public List<Note> findByDateAfterOrderByDate(LocalDate date, Sort sort);
+	// In controller sort them also by time and set the "day after" yesterday
+	public List<Note> findByUserAndDateAfterOrderByDate(UserEntity user, LocalDate date, Sort sort);
 
 	// find notes before this date and sort them, used in previous notes -page
 	// In controller sort them also by time
-	public List<Note> findByDateBeforeOrderByDate(LocalDate date, Sort sort);
-	
+	public List<Note> findByUserAndDateBeforeOrderByDate(UserEntity user, LocalDate date, Sort sort);
+
+
 	// find by date and done and sort by time
-	public List<Note> findAllByDateAndDoneOrderByTime(LocalDate date, Boolean done);
+	public List<Note> findAllByUserAndDateAndDoneOrderByTime(UserEntity user, LocalDate date, Boolean done);
 
-	// Find all notes and sort them by date and time, NOT USED
-	//public List<Note> findAllByOrderByDate(Sort sort);
 
-	// public List<Note> findByStartDateBeforeOrderByDate(LocalDate date,Sort sort);
-
-	// tätä ei vielä käytetä
-	//public List<Note> findByImportant(Boolean important);
-
-	// public List<Note> findByDate(LocalDate date);
-
-	// find notes by date and order them by time, used to show notes today and
-	// tomorrow
-	//public List<Note> findAllByDateOrderByTime(LocalDate date);
-
-	// public List<Note> findAllByDateOrderByDate(LocalDate date); //kokeilu
-
-	// public List<Note> findAllByOrderByDate();
-
-	// tätä ei käytetä mihinkään just nyt
-	//public List<Note> findAllByDoneOrderByTime(Boolean done);
-
-	
 }

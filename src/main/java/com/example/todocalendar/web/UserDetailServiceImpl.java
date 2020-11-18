@@ -14,6 +14,7 @@ import com.example.todocalendar.domain.UserRepository;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
+	@Autowired
 	private final UserRepository repository;
 
 	@Autowired
